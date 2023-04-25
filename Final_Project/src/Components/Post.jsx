@@ -4,15 +4,22 @@ import { AiTwotoneEdit, AiOutlineDelete } from "react-icons/ai";
 import { createClient } from "@supabase/supabase-js";
 import { useNavigate} from "react-router-dom";
 import MoreInfo from "./MoreInfo";
+import CommentForm from "./CommentForm";
+import {BiComment} from "react-icons/bi";
+import dayjs from "dayjs";
 
 
 function Post(props) {
   const Data = props.prop;
+  // console.log(props.key);
+  const picUrlFlag= props.pic;
+  console.log(picUrlFlag)
   const [vote, setVote] = useState(Data.Vote);
   const [selectedOption, setSelectedOption] = useState("");
   const [edit, setEdit] = useState("");
   const [editTitle, setEditTitle] = useState("");
   const [editText, setEditText] = useState("");
+  const [comment, setComment] = useState(false);
 
   let btnUpRef = useRef();
   let btnDownRef = useRef();
@@ -24,7 +31,11 @@ function Post(props) {
 
   const supabase = createClient(supabaseURL, supabasekey);
 
-  const supabaseVote = async () => {
+  // Update the vote data for the current user in the database.
+
+  
+
+const supabaseVote = async () => {
     const { data, error } = await supabase
       .from("Data") 
       .update({ Vote: vote })
@@ -36,6 +47,7 @@ function Post(props) {
       setSelectedOption("upvote");
       setVote(vote => vote + 1);
       supabaseVote();
+
     } else if (selectedOption === "downvote") {
       setSelectedOption("upvote");
       setVote(vote=>vote + 2);
@@ -100,6 +112,17 @@ function Post(props) {
   const moreInfo = () => {
     navigate(`/${Data.id}`)
   }
+
+  const timeElasped = () => {
+    const now= new Date();
+    const postCreate= new Date(Data.created_at);
+    const diff= now-postCreate;
+   return (Math.floor(diff/(1000*60*60*24)));
+
+  }
+
+
+
   return (
     <>
       {edit !== "Edit" ? (
@@ -129,8 +152,18 @@ function Post(props) {
                 onClick={handleClickDown}
               />
             </div>
+           
 
-            <div className="text-center w-11/12  m-auto border-x-2 border-gray-600 group-hover:border-gray-400 duration-300 select-none" onClick={moreInfo}>
+            <div className="text-center w-11/12 h-5/6 m-auto border-x-2 border-gray-600 group-hover:border-gray-400 duration-300 select-none" onClick={moreInfo}>
+             {
+              <h1 className="mb-3 text-gray-500">Posted {timeElasped()} hours ago.</h1>
+             }
+             
+             {
+
+                picUrlFlag ? (<img src={Data.image_url} className="w-1/2 h-1/2 mx-auto" />) : (null) 
+             }
+             
               {Data ? (
                 <h1 className="text-3xl ">{Data.Title}</h1>
               ) : (
@@ -141,6 +174,18 @@ function Post(props) {
               ) : (
                 <h1>no data</h1>
               )}
+              
+              <div className="w-full mx-auto flex flex-col flex-1 items-center">
+              <BiComment className={`text-2xl   mt-4 text-gray-600 hover:text-gray-400 duration-300 ${
+                  comment === true ? "text-teal-500 hover:text-teal-700" : ""
+                }`}
+                onClick={()=>setComment(!comment)}
+                />
+                {
+                  comment== true? (<CommentForm id={Data.id}/>) : null
+                }
+              
+              </div>
             </div>
 
             <div className="text-center ml-3 my-auto">
@@ -211,6 +256,7 @@ function Post(props) {
                 ) : (
                   <h1>no data</h1>
                 )}
+                
                  <button
                 className="bg-[#ffd046] border-2 border-[#2F2F2F] hover:border-white text-black font-bold py-1 px-6 rounded-full"
                 onClick={handleClickUpdate}

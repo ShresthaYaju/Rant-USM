@@ -1,8 +1,20 @@
 import React from 'react'
+import { useNavigate} from "react-router-dom";
 
 function PopularContent() {
+
+    const navigate = useNavigate();
+
+    const backHome=()=>{
+        navigate('/')
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          })
+      }
   return (
-    <div className='w-3/12 p-4 my-8 mr-8 ml-[-350px] border-2  border-gray-600  bg-[#2F2F2F] h-3/5 rounded-md select-none'>
+    <div className='w-3/12 p-4 my-8 mr-8 ml-[-350px] border-2  border-gray-600  bg-[#2F2F2F] h-3/5 rounded-md select-none sticky top-28 z-50'>
         <h1 className='text-lg text-[#ffd046]'>Popular Communities</h1>
         <ul className='flex flex-1 gap-2 flex-wrap justify-center'>
             <li>
@@ -29,7 +41,12 @@ function PopularContent() {
         </ul>
 
 
-        
+        <button
+                className="bg-[#ffd046] mt-2 border-2 border-[#2F2F2F] hover:border-white text-black font-bold py-1 px-6 rounded-full"
+                onClick={backHome}
+              >
+                Home
+              </button>
       
     </div>
   )

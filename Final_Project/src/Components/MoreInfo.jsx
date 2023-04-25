@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import Post from "./Post";
 import PopularContent from "./PopularContent";
+import CommentForm from "./CommentForm";
 
 function MoreInfo() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ function MoreInfo() {
 
   const supabase = createClient(supabaseURL, supabasekey);
   const [data, setData] = useState([]);
+  const [commentData, setCommentData] = useState([]);
 
   const getData = async () => {
     const { data, error } = await supabase
@@ -25,16 +27,44 @@ function MoreInfo() {
 
   useEffect(() => {
     getData();
+    getComment();
+
   }, []);
+
+  const getComment = async () => {
+    const { data, error } = await supabase
+      .from("Comment")
+      .select("*")
+      .eq("origin_id", id);
+    console.log(data);
+    setCommentData(data);
+  };
+
 
   return (
     <div className="flex">
       <div className="content w-full">
 
-          <Post prop={data} />
+          <Post prop={data} pic={true} />
+          <div className="pl-40 w-4/6 my-8">
+          <div className={`border-2 border-gray-600  bg-[#2F2F2F] p-4  pr-5 group hover:border-gray-400 duration-300 rounded-md  `}
+          >
+            <h1 className="text-xl text-[#ffd046] font-semibold">Comments</h1>
+            {
+              commentData.map((comment,key) => {
+                return (
+                    <p>{key+1}.{comment.comment_text}</p>
+                )
+            })
+            }
+          </div>
+       
+
+         </div>
 
       </div>
       <PopularContent />
+    
     </div>
   );
 }
