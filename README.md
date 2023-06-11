@@ -42,7 +42,7 @@ The following **additional** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 <blockquote class="imgur-embed-pub" lang="en" data-id="a/0cCTjgZ"  ><a href="//imgur.com/a/0cCTjgZ">Final web 102 Code path</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
-<img src='https://i.imgur.com/QDZ85vJ.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/2dbaR0E"  ><a href="//imgur.com/a/2dbaR0E">Final Upvote</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
 
 
